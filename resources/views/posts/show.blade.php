@@ -1,0 +1,1 @@
+@include('posts.includes.showpost')
