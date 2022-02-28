@@ -140,8 +140,10 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        Post::find($id)->delete();
+        return redirect()->route('posts.index')
+                        ->with('success','Objava uspesno izbrisana');
     }
 }

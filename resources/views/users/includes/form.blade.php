@@ -46,4 +46,8 @@
           {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
       </div>
   </div>
-<button type="submit" class="btn btn-primary">Stvorite račun</button>
+<button type="submit" class="btn btn-primary">@isset($user)
+  Uredite račun
+  @else
+  Stvorite račun
+@endisset</button>

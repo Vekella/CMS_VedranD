@@ -27,4 +27,8 @@
  
 
   
-<button type="submit" class="btn btn-primary">Posalji</button>
+<button type="submit" class="btn btn-primary">@isset($roles)
+  Uredite Ulogu
+  @else
+  Stvorite Ulogu
+@endisset</button>

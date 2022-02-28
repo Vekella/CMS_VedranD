@@ -15,9 +15,13 @@
        <span class="invalid-feedback" role="alert">
            {{$message}}
    @enderror
-   <label for="image">Slika</label><br>
+   
   @isset($post)
-  <img src="/{{$post->image}}" alt="" width="100">
+  <label for="image">Stara Slika</label><br>
+  <img src="/{{$post->image}}" alt="" width="100" style="margin-left:20px"><br><br>
+  <label for="image">Nova Slika</label><br>
+  @else
+  <label for="image">Slika</label><br>
   @endisset
    
   <input name="image" type="file" class="form-control @error('image') is-invalid @enderror" id="image" aria-describedby="emailHelp" value="{{old('image')}}@isset($post){{$post->image}}@endisset" placeholder="Prijenos fotografije">
@@ -33,4 +37,4 @@
  
 
   
-<button type="submit" class="btn btn-primary">Objavite</button>
+<button type="submit" class="btn btn-primary">Spremi promjene</button>
