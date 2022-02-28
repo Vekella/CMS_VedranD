@@ -16,13 +16,13 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // function __construct()
-    // {
-    //      $this->middleware('permission:Pregled Uloga|Stvaranje Uloga|Uredjivanje Uloga|Brisanje Uloga', ['only' => ['index','store']]);
-    //      $this->middleware('permission:Stvaranje Uloga', ['only' => ['create','store']]);
-    //      $this->middleware('permission:Uredjivanje Uloga', ['only' => ['edit','update']]);
-    //      $this->middleware('permission:Brisanje Uloga', ['only' => ['destroy']]);
-    // }
+     function __construct()
+     {
+          $this->middleware('permission:Pregled Uloga|Stvaranje Uloga|Uredjivanje Uloga|Brisanje Uloga', ['only' => ['index','store']]);
+          $this->middleware('permission:Stvaranje Uloga', ['only' => ['create','store']]);
+          $this->middleware('permission:Uredjivanje Uloga', ['only' => ['edit','update']]);
+          $this->middleware('permission:Brisanje Uloga', ['only' => ['destroy']]);
+     }
     
     /**
      * Display a listing of the resource.
@@ -45,7 +45,8 @@ class RoleController extends Controller
     public function create()
     {
         $permission = Permission::get();
-        return view('roles.create',compact('permission'));
+        
+         return view('roles.create',compact('permission'));
     }
     
     /**

@@ -26,7 +26,7 @@ class OwnPostController extends Controller
     public function index(Request $request)
     {
            $user = auth()->user();
-          $user_id=$user->id;
+           $user_id=$user->id;
         //   $userposts=Post::all()->where('user_id',$user_id);
            $posts= Post::orderBy('id','ASC')->where('user_id',$user_id)->paginate(10);
             return view('ownposts.home',compact('posts'),['user'=>$user])
@@ -45,7 +45,8 @@ class OwnPostController extends Controller
     public function create()
     {
         $post = Post::get();
-        return view('posts.create',compact('post'));
+         return view('ownposts.create');
+        
     }
 
     /**
@@ -85,6 +86,7 @@ class OwnPostController extends Controller
      */
     public function show($id)
     {
+
         $user = auth()->user();
         $post = Post::find($id);
         return view('ownposts.show',['post'=>$post],['user'=>$user]);
@@ -99,9 +101,19 @@ class OwnPostController extends Controller
     public function edit(Post $post,$id)
     {
         $post=Post::find($id);
-        if(Auth::check()){
-            return view('ownposts.edit',['post'=>$post]);
-        }
+          $user = auth()->user();
+          $user_id=$user->id;
+          $post_user_id=$post->user_id;
+         
+          if($post_user_id==$user_id){
+            $post=Post::find($id);
+            if(Auth::check()){
+                return view('ownposts.edit',['post'=>$post]);
+            }
+          }
+       else{
+           return Redirect::To('profile');
+       }
     }
 
     /**
@@ -115,7 +127,7 @@ class OwnPostController extends Controller
     {
         $user = auth()->user();
         $post=Post::find($id);
-        $post->user_id=$user->id;
+        $post->user_id=$post->user_id;
         $post->title=$request->title;
         $post->description=$request->description;
 
@@ -131,7 +143,7 @@ class OwnPostController extends Controller
         }
         $post->save();
 
-        return Redirect::To('profile');
+        return redirect()->route('own-posts.show',$post->id)->with('success','Objava uspesno uredjena');
     }
 
     /**
@@ -140,8 +152,20 @@ class OwnPostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        //
+        $post=Post::find($id);
+        $user = auth()->user();
+        $user_id=$user->id;
+        $post_user_id=$post->user_id;
+       
+        if($post_user_id==$user_id){
+        Post::find($id)->delete();
+        return redirect()->route('profile.index')
+                        ->with('success','Objava uspesno izbrisana');
+        }
+        else{
+            return Redirect::To('profile');
+        }
     }
 }

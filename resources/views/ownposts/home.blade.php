@@ -9,8 +9,10 @@
         
         <a class="btn btn-sm btn-success float-right" href="{{ route('own-posts.create') }}" role="button">Nova objava</a></div></div>
         <br><br><br>
+        <div class="container">
         @foreach ($posts as $post)
         @include('ownposts.includes.showposts')
+        </div>
         <br>
         @endforeach
         

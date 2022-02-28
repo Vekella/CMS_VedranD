@@ -14,7 +14,7 @@ class Post extends Model
     public $incrementing=true;
 
     protected $fillable = [
-        'user_id', 'title','description','image'
+        'user_id','title','description','image'
     ];
    
     public function user()

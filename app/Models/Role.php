@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+    protected $table='roles';
+    protected $primaryKey='id';
+    public $incrementing=true;
+
+    
+   
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

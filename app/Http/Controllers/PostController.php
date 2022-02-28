@@ -43,8 +43,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        // $post = Post::get();
-        // return view('posts.create',compact('post'));
+         $post = Post::get();
+         return view('own-posts.create',compact('post'));
     }
 
     /**
@@ -93,9 +93,15 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit($id)
     {
-        
+
+          $post=Post::find($id);
+          if(Auth::check()){
+              return view('posts.edit',['post'=>$post]);
+          }   
+  
+
     }
 
     /**
@@ -105,9 +111,27 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request,$id)
     {
-        //
+        $user = auth()->user();
+        $post=Post::find($id);
+        $post->user_id=$post->user_id;
+        $post->title=$request->title;
+        $post->description=$request->description;
+
+        $image=$request->file('image');
+
+        if($image!=null){
+            $imagename=$user->id.$image->getClientOriginalName();
+            $extension=$image->getClientOriginalExtension();
+
+            $image->move('image',$post->title.'.'.$extension);
+            $path='image/'.$post->title.'.'.$extension;
+            $post->image=$path;
+        }
+        $post->save();
+
+        return Redirect::To('posts');
     }
 
     /**

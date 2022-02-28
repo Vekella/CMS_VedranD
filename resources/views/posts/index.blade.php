@@ -24,6 +24,7 @@
             <th scope="col">Naslov</th>
             <th scope="col">Opis</th>
             <th scope="col">Slika</th>
+            <th scope="col">Postavke</th>
           </tr>
         </thead>
         
@@ -38,8 +39,11 @@
         <td><img src="/{{$post->image}}" alt="" width="100"></td>
         <td>
 
-            <a class="btn btn-sm btn-primary" href="{{ route('posts.edit', $post->id) }}" role="button">Edit</a>
-             <button type="button" class="btn btn-sm btn-danger"
+          @can('Uredjivanje Objava')
+          <a class="btn btn-sm btn-primary" href="{{ route('posts.edit', $post->id) }}" role="button">Edit</a>
+          @endcan 
+          @can('Brisanje Objava')
+          <button type="button" class="btn btn-sm btn-danger"
              onclick="event.preventDefault();
              document.getElementById('delete-post-form-{{$post->id}}').submit()
              ">
@@ -47,6 +51,8 @@
             <form id="delete-post-form-{{$post->id}}" action="{{route('posts.destroy',$post->id)}}" method="POST" style="display:none" >
                 @csrf
             @method("DELETE")
+          @endcan
+             
             </form>
         </td>
       </tr>
