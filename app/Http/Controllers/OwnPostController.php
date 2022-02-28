@@ -96,9 +96,12 @@ class OwnPostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Post $post,$id)
     {
-        //
+        $post=Post::find($id);
+        if(Auth::check()){
+            return view('ownposts.edit',['post'=>$post]);
+        }
     }
 
     /**
@@ -108,9 +111,27 @@ class OwnPostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post,$id)
     {
-        //
+        $user = auth()->user();
+        $post=Post::find($id);
+        $post->user_id=$user->id;
+        $post->title=$request->title;
+        $post->description=$request->description;
+
+        $image=$request->file('image');
+
+        if($image!=null){
+            $imagename=$user->id.$image->getClientOriginalName();
+            $extension=$image->getClientOriginalExtension();
+
+            $image->move('image',$post->title.'.'.$extension);
+            $path='image/'.$post->title.'.'.$extension;
+            $post->image=$path;
+        }
+        $post->save();
+
+        return Redirect::To('profile');
     }
 
     /**

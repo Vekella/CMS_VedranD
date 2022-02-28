@@ -30,6 +30,7 @@
       
       <tbody>
           @foreach ($roles as $role)
+          
           <tr>
             <th scope="row">{{$role->id}}</th>
             <td>{{$role->name}}</td>
